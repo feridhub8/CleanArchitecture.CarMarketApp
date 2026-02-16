@@ -1,0 +1,86 @@
+2026-02-16 18:34:24.554 +04:00 [INF] Executed DbCommand (42ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-02-16 18:34:24.656 +04:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-02-16 18:34:24.721 +04:00 [INF] User profile is available. Using 'C:\Users\ferid\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-02-16 18:34:24.814 +04:00 [INF] Now listening on: https://localhost:7222
+2026-02-16 18:34:24.815 +04:00 [INF] Now listening on: http://localhost:5141
+2026-02-16 18:34:24.900 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-02-16 18:34:24.901 +04:00 [INF] Hosting environment: Development
+2026-02-16 18:34:24.902 +04:00 [INF] Content root path: C:\Users\ferid\source\repos\CarMarketApp\src\CarMarketApp.WebAPI
+2026-02-16 18:34:25.323 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7222/swagger/index.html - null null
+2026-02-16 18:34:25.453 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7222/swagger/index.html - 200 null text/html;charset=utf-8 131.89ms
+2026-02-16 18:34:25.461 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7222/_framework/aspnetcore-browser-refresh.js - null null
+2026-02-16 18:34:25.461 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7222/_vs/browserLink - null null
+2026-02-16 18:34:25.467 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7222/_framework/aspnetcore-browser-refresh.js - 200 16523 application/javascript; charset=utf-8 6.2984ms
+2026-02-16 18:34:25.489 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7222/_vs/browserLink - 200 null text/javascript; charset=UTF-8 27.7446ms
+2026-02-16 18:34:25.702 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7222/swagger/v1/swagger.json - null null
+2026-02-16 18:34:25.711 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7222/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 9.6894ms
+2026-02-16 18:34:44.723 +04:00 [INF] Request starting HTTP/1.1 POST https://localhost:7222/api/Users/Login - application/json 71
+2026-02-16 18:34:44.762 +04:00 [INF] Executing endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:34:44.791 +04:00 [INF] Route matched with {action = "Login", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(CarMarketApp.Application.DTOs.Users.LoginUserDto, System.Threading.CancellationToken) on controller CarMarketApp.WebAPI.Controllers.UsersController (CarMarketApp.WebAPI).
+2026-02-16 18:34:44.799 +04:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-02-16 18:34:45.052 +04:00 [INF] Executed DbCommand (6ms) [Parameters=[@__loginUserDto_EmailOrUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[CreatedAt], [a].[DeletedAt], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[IsDeleted], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UpdatedAt], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[IsDeleted] = CAST(0 AS bit) AND ([a].[Email] = @__loginUserDto_EmailOrUserName_0 OR [a].[UserName] = @__loginUserDto_EmailOrUserName_0)
+2026-02-16 18:34:45.240 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2026-02-16 18:34:45.409 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTimeOffset), @p3='?' (DbType = Boolean), @p4='?' (DbType = DateTimeOffset), @p5='?' (Size = 4000), @p6='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [RefreshTokens] ([Id], [AppUserId], [Expires], [IsRevoked], [RevokedAt], [RevokedReason], [TokenHash])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-02-16 18:34:45.431 +04:00 [INF] Executing OkObjectResult, writing value of type 'CarMarketApp.Application.Models.ResultPattern.Result`1[[CarMarketApp.Application.Models.LoginResponse, CarMarketApp.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-02-16 18:34:45.443 +04:00 [INF] Executed action CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI) in 644.5399ms
+2026-02-16 18:34:45.446 +04:00 [INF] Executed endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:34:45.452 +04:00 [INF] Request finished HTTP/1.1 POST https://localhost:7222/api/Users/Login - 200 null application/json; charset=utf-8 728.5798ms
+2026-02-16 18:34:55.363 +04:00 [INF] Request starting HTTP/1.1 POST https://localhost:7222/api/Users/Login - application/json 71
+2026-02-16 18:34:55.368 +04:00 [INF] Executing endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:34:55.370 +04:00 [INF] Route matched with {action = "Login", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(CarMarketApp.Application.DTOs.Users.LoginUserDto, System.Threading.CancellationToken) on controller CarMarketApp.WebAPI.Controllers.UsersController (CarMarketApp.WebAPI).
+2026-02-16 18:34:55.404 +04:00 [INF] Executed DbCommand (16ms) [Parameters=[@__loginUserDto_EmailOrUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[CreatedAt], [a].[DeletedAt], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[IsDeleted], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UpdatedAt], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[IsDeleted] = CAST(0 AS bit) AND ([a].[Email] = @__loginUserDto_EmailOrUserName_0 OR [a].[UserName] = @__loginUserDto_EmailOrUserName_0)
+2026-02-16 18:34:55.475 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2026-02-16 18:34:55.483 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTimeOffset), @p3='?' (DbType = Boolean), @p4='?' (DbType = DateTimeOffset), @p5='?' (Size = 4000), @p6='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [RefreshTokens] ([Id], [AppUserId], [Expires], [IsRevoked], [RevokedAt], [RevokedReason], [TokenHash])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-02-16 18:34:55.487 +04:00 [INF] Executing OkObjectResult, writing value of type 'CarMarketApp.Application.Models.ResultPattern.Result`1[[CarMarketApp.Application.Models.LoginResponse, CarMarketApp.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-02-16 18:34:55.489 +04:00 [INF] Executed action CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI) in 117.3926ms
+2026-02-16 18:34:55.491 +04:00 [INF] Executed endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:34:55.493 +04:00 [INF] Request finished HTTP/1.1 POST https://localhost:7222/api/Users/Login - 200 null application/json; charset=utf-8 129.2119ms
+2026-02-16 18:35:15.709 +04:00 [INF] Request starting HTTP/1.1 POST https://localhost:7222/api/Users/Login - application/json 71
+2026-02-16 18:35:15.714 +04:00 [INF] Executing endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:35:15.715 +04:00 [INF] Route matched with {action = "Login", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(CarMarketApp.Application.DTOs.Users.LoginUserDto, System.Threading.CancellationToken) on controller CarMarketApp.WebAPI.Controllers.UsersController (CarMarketApp.WebAPI).
+2026-02-16 18:35:15.740 +04:00 [INF] Executed DbCommand (10ms) [Parameters=[@__loginUserDto_EmailOrUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[CreatedAt], [a].[DeletedAt], [a].[Email], [a].[EmailConfirmed], [a].[FirstName], [a].[IsDeleted], [a].[LastName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UpdatedAt], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[IsDeleted] = CAST(0 AS bit) AND ([a].[Email] = @__loginUserDto_EmailOrUserName_0 OR [a].[UserName] = @__loginUserDto_EmailOrUserName_0)
+2026-02-16 18:35:15.809 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2026-02-16 18:35:15.816 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTimeOffset), @p3='?' (DbType = Boolean), @p4='?' (DbType = DateTimeOffset), @p5='?' (Size = 4000), @p6='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [RefreshTokens] ([Id], [AppUserId], [Expires], [IsRevoked], [RevokedAt], [RevokedReason], [TokenHash])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2026-02-16 18:35:15.819 +04:00 [INF] Executing OkObjectResult, writing value of type 'CarMarketApp.Application.Models.ResultPattern.Result`1[[CarMarketApp.Application.Models.LoginResponse, CarMarketApp.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-02-16 18:35:15.821 +04:00 [INF] Executed action CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI) in 104.0829ms
+2026-02-16 18:35:15.823 +04:00 [INF] Executed endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
+2026-02-16 18:35:15.824 +04:00 [INF] Request finished HTTP/1.1 POST https://localhost:7222/api/Users/Login - 200 null application/json; charset=utf-8 114.877ms

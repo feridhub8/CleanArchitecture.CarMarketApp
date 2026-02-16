@@ -1,11 +1,11 @@
-﻿using CarMarketApp.Application.Abstractions;
+﻿using CarMarketApp.Application.Abstractions.Identity;
 using CarMarketApp.Application.Extensions;
 using CarMarketApp.Application.Models.ResultPattern;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace CarMarketApp.Application.Features.Commands;
+namespace CarMarketApp.Application.Features.Commands.Users;
 
 public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
 {

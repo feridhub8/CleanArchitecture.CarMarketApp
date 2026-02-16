@@ -1,7 +1,7 @@
 ﻿using CarMarketApp.Application.DTOs.Users;
 using FluentValidation;
 
-namespace CarMarketApp.Application.Features.Commands;
+namespace CarMarketApp.Application.Features.Commands.Users;
 
 public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {

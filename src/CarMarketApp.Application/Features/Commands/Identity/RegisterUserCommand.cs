@@ -2,6 +2,6 @@
 using CarMarketApp.Application.Models.ResultPattern;
 using MediatR;
 
-namespace CarMarketApp.Application.Features.Commands;
+namespace CarMarketApp.Application.Features.Commands.Users;
 
 public sealed record RegisterUserCommand(RegisterUserDto RegisterUserDto) : IRequest<Result>;

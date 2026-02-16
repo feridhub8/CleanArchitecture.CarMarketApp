@@ -1,4 +1,5 @@
-﻿using CarMarketApp.Infrastructure.Identity.Entities;
+﻿using CarMarketApp.Domain.Entities;
+using CarMarketApp.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRo
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
