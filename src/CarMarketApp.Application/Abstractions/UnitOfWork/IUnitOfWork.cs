@@ -8,6 +8,6 @@ public interface IUnitOfWork : IDisposable
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     Task BeginTransactionAsync();
-    Task CommitTransactionAsync(CancellationToken cancellationToken);
+    Task<int> CommitTransactionAsync(CancellationToken cancellationToken);
     Task RollbackTransactionAsync();
 }

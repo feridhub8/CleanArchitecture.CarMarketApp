@@ -6,28 +6,31 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace CarMarketApp.Application.Features.Commands.Users;
+namespace CarMarketApp.Application.Features.Commands.Identity;
 
-public sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginResponse>>
+public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<LoginResponse>>
 {
-    private readonly IValidator<LoginUserCommand> _validator;
+    private readonly IValidator<RefreshTokenCommand> _validator;
     private readonly IUserService _userService;
 
-    public LoginUserCommandHandler(IValidator<LoginUserCommand> validator, IUserService userService)
+    public RefreshTokenCommandHandler(
+        IValidator<RefreshTokenCommand> validator,
+        IUserService userService)
     {
         _validator = validator;
         _userService = userService;
     }
 
-    public async Task<Result<LoginResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         if (request is null)
             return Result<LoginResponse>.Fail("Request cannot be null");
 
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
         if (!validationResult.IsValid)
             return Result<LoginResponse>.Fail("Validation Error", validationResult.GetErrors());
 
-        return await _userService.LoginUserAsync(request.LoginUserDto, cancellationToken);
+        return await _userService.RefreshTokenAsync(request.RefreshTokenDto, cancellationToken);
     }
 }

@@ -84,3 +84,4 @@ VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
 2026-02-16 18:35:15.821 +04:00 [INF] Executed action CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI) in 104.0829ms
 2026-02-16 18:35:15.823 +04:00 [INF] Executed endpoint 'CarMarketApp.WebAPI.Controllers.UsersController.Login (CarMarketApp.WebAPI)'
 2026-02-16 18:35:15.824 +04:00 [INF] Request finished HTTP/1.1 POST https://localhost:7222/api/Users/Login - 200 null application/json; charset=utf-8 114.877ms
+2026-02-16 20:27:46.805 +04:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.

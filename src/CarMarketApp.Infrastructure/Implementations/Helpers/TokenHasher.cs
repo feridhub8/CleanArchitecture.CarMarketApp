@@ -11,9 +11,9 @@ public class TokenHasher : ITokenHasher
         if (string.IsNullOrWhiteSpace(token))
             throw new ArgumentException("Token cannot be null or empty", nameof(token));
 
-        using var sha256 = SHA256.Create();
-        var bytes = Encoding.UTF8.GetBytes(token);
-        var hashBytes = sha256.ComputeHash(bytes);
+        using SHA256 sha256 = SHA256.Create();
+        byte[] bytes = Encoding.UTF8.GetBytes(token);
+        byte[] hashBytes = sha256.ComputeHash(bytes);
         return Convert.ToBase64String(hashBytes);
     }
 
@@ -22,7 +22,7 @@ public class TokenHasher : ITokenHasher
         if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(tokenHash))
             return false;
 
-        var hashedInput = HashToken(token);
-        return hashedInput == tokenHash;
+        string hashedInput = HashToken(token);
+        return string.Equals(hashedInput, tokenHash);
     }
 }

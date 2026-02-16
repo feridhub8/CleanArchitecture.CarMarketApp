@@ -24,7 +24,7 @@ public sealed class TokenGenerator : ITokenGenerator
 
     public string GenerateToken()
     {
-        var bytes = RandomNumberGenerator.GetBytes(64);
+        byte[] bytes = RandomNumberGenerator.GetBytes(64);
         return Convert.ToBase64String(bytes)
                       .TrimEnd('=')
                       .Replace('+', '-')
@@ -33,12 +33,12 @@ public sealed class TokenGenerator : ITokenGenerator
 
     public async Task<string> GenerateJwtToken(UserClaimsDto userClaimsDto)
     {
-        var secretKey = _jwtSettings.SecretKey;
-        var issuer = _jwtSettings.Issuer;
-        var audience = _jwtSettings.Audience;
-        var expiryMinutes = _jwtSettings.ExpiryMinutes;
+        string secretKey = _jwtSettings.SecretKey;
+        string issuer = _jwtSettings.Issuer;
+        string audience = _jwtSettings.Audience;
+        int expiryMinutes = _jwtSettings.ExpiryMinutes;
 
-        var claims = new List<Claim>
+        List<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, userClaimsDto.Id.ToString()),
             new Claim(ClaimTypes.Name, userClaimsDto.FirstName),
@@ -51,14 +51,14 @@ public sealed class TokenGenerator : ITokenGenerator
         if (user is null)
             throw new Exception("User not found");
 
-        var roles = await _userManager.GetRolesAsync(user);
+        IList<string> roles = await _userManager.GetRolesAsync(user);
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,
             claims: claims,

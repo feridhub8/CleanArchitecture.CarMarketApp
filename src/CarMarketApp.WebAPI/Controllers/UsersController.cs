@@ -1,6 +1,8 @@
-﻿using CarMarketApp.Application.DTOs.Users;
-using CarMarketApp.Application.Features.Commands;
+﻿using CarMarketApp.Application.DTOs.Identity;
+using CarMarketApp.Application.DTOs.Users;
+using CarMarketApp.Application.Features.Commands.Identity;
 using CarMarketApp.Application.Features.Commands.Users;
+using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +34,16 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto, CancellationToken cancellationToken)
     {
-        Result? result = await _mediator.Send(new LoginUserCommand(loginUserDto), cancellationToken);
+        Result<LoginResponse>? result = await _mediator.Send(new LoginUserCommand(loginUserDto), cancellationToken);
+
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto, CancellationToken cancellationToken)
+    {
+        Result<LoginResponse>? result = await _mediator.Send(new RefreshTokenCommand(refreshTokenDto), cancellationToken);
 
         return result.Success ? Ok(result) : BadRequest(result);
     }

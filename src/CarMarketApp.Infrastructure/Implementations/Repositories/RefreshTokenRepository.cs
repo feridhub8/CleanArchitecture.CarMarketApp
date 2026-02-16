@@ -1,6 +1,7 @@
 ﻿using CarMarketApp.Application.Abstractions.Repositories;
 using CarMarketApp.Domain.Entities;
 using CarMarketApp.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarMarketApp.Infrastructure.Implementations.Repositories;
 
@@ -16,5 +17,15 @@ public sealed class RefreshTokenRepository : IRefreshTokenRepository
     public void Add(RefreshToken refreshToken)
     {
         _context.Add(refreshToken);
+    }
+
+    public void Update(RefreshToken refreshToken)
+    {
+        _context.Update(refreshToken);
+    }
+
+    public async Task<RefreshToken?> GetRefreshTokenByToken(string tokenHash, CancellationToken cancellationToken)
+    {
+        return await _context.RefreshTokens.FirstOrDefaultAsync(rt => string.Equals(rt.TokenHash, tokenHash));
     }
 }

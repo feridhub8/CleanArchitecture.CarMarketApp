@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using CarMarketApp.Application.Abstractions.Helpers;
 using CarMarketApp.Application.Abstractions.Identity;
 using CarMarketApp.Application.Abstractions.UnitOfWork;
+using CarMarketApp.Application.DTOs.Identity;
 using CarMarketApp.Application.DTOs.Users;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
@@ -87,5 +89,51 @@ public sealed class UserService : IUserService
         LoginResponse loginResponse = new LoginResponse(user.UserName!, accessToken, plainRefreshToken);
 
         return Result<LoginResponse>.Ok(loginResponse, "User has logged in successfully");
+    }
+
+    public async Task<Result<LoginResponse>> RefreshTokenAsync(RefreshTokenDto refreshTokenDto, CancellationToken cancellationToken)
+    {
+        string tokenHash = _tokenHasher.HashToken(refreshTokenDto.Token);
+
+        RefreshToken? refreshToken = await _unitOfWork.RefreshTokens.GetRefreshTokenByToken(tokenHash, cancellationToken);
+
+        if (refreshToken is null || refreshToken.IsRevoked || refreshToken.Expires < DateTime.UtcNow)
+            return Result<LoginResponse>.Fail("Invalid or expired refresh token.");
+
+        AppUser? appUser = await _userManager.FindByIdAsync(refreshToken.AppUserId.ToString());
+
+        if (appUser is null)
+            return Result<LoginResponse>.Fail("There is no user with this refresh token");
+
+        await _unitOfWork.BeginTransactionAsync();
+
+        refreshToken.IsRevoked = true;
+        refreshToken.RevokedAt = DateTimeOffset.UtcNow;
+        refreshToken.RevokedReason = "Refreshed";
+
+        _unitOfWork.RefreshTokens.Update(refreshToken);
+
+        UserClaimsDto userClaimsDto = _mapper.Map<UserClaimsDto>(appUser);
+        string newAccessToken = await _tokenGenerator.GenerateJwtToken(userClaimsDto);
+        string newPlainRefreshToken = _tokenGenerator.GenerateToken();
+        string newRefreshTokenHash = _tokenHasher.HashToken(newPlainRefreshToken);
+
+        RefreshToken newRefreshToken = new RefreshToken
+        {
+            AppUserId = appUser.Id,
+            TokenHash = newRefreshTokenHash
+        };
+
+        _unitOfWork.RefreshTokens.Add(newRefreshToken);
+
+        int saveResult = await _unitOfWork.CommitTransactionAsync(cancellationToken);
+
+        if (saveResult < 1)
+            return Result<LoginResponse>.Fail("Something went wrong while saving changes");
+
+        LoginResponse loginResponse = new LoginResponse(appUser.UserName!, newAccessToken, newPlainRefreshToken);
+
+        return Result<LoginResponse>.Ok(loginResponse, "User has logged in successfully");
+
     }
 }
