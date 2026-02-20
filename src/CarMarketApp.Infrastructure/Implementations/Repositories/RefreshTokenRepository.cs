@@ -28,4 +28,9 @@ public sealed class RefreshTokenRepository : IRefreshTokenRepository
     {
         return await _context.RefreshTokens.FirstOrDefaultAsync(rt => string.Equals(rt.TokenHash, tokenHash));
     }
+
+    public async Task<IEnumerable<RefreshToken>> GetRefreshTokensByUserId(Guid userId, CancellationToken cancellationToken)
+    {
+        return await _context.RefreshTokens.Where(rt => rt.AppUserId == userId).ToListAsync(cancellationToken);
+    }
 }

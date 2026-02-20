@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.24" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.24">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\CarMarketApp.Application\CarMarketApp.Application.csproj" />
     <ProjectReference Include="..\CarMarketApp.Domain\CarMarketApp.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Implementations\Services\" />
   </ItemGroup>
 
 </Project>

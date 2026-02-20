@@ -10,4 +10,8 @@ public interface IUserService
     Task<Result> RegisterUserAsync(RegisterUserDto registerUserDto);
     Task<Result<LoginResponse>> LoginUserAsync(LoginUserDto loginUserDto, CancellationToken cancellationToken);
     Task<Result<LoginResponse>> RefreshTokenAsync(RefreshTokenDto refreshTokenDto, CancellationToken cancellationToken);
+    Task<Result> LogoutCurrentDeviceAsync(LogoutCurrentDeviceDto logoutCurrentDeviceDto, CancellationToken cancellationToken);
+    Task<Result> LogoutAllDevicesAsync(Guid userId, CancellationToken cancellationToken);
+    Task<Result> ForgotPasswordAsync(ForgotPasswordUserDto forgotPasswordUserDto);
+    Task<Result> ResetPasswordAsync(ResetPasswordUserDto resetPasswordUserDto, string resetToken);
 }
