@@ -14,4 +14,10 @@ public interface IUserService
     Task<Result> LogoutAllDevicesAsync(Guid userId, CancellationToken cancellationToken);
     Task<Result> ForgotPasswordAsync(ForgotPasswordUserDto forgotPasswordUserDto);
     Task<Result> ResetPasswordAsync(ResetPasswordUserDto resetPasswordUserDto, string resetToken);
+    Task<Result> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto);
+    Task<Result> AddModeratorAsync(Guid userId);
+    Task<Result> RemoveModeratorAsync(Guid userId);
+    Task<Result> DeleteUserAsync(Guid userId);
+    Task<Result> RestoreUserAsync(Guid userId);
+    Task<Result<PagedList<UserDto>>> GetAllUsersAsync(int page, int pageSize, CancellationToken cancellationToken);
 }

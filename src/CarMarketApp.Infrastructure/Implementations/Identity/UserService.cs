@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Azure.Core;
 using CarMarketApp.Application.Abstractions.Helpers;
 using CarMarketApp.Application.Abstractions.Identity;
@@ -8,6 +9,7 @@ using CarMarketApp.Application.DTOs.Users;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
 using CarMarketApp.Domain.Entities;
+using CarMarketApp.Infrastructure.Extensions;
 using CarMarketApp.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -210,10 +212,128 @@ public sealed class UserService : IUserService
 
         return result.Succeeded
             ? Result.Ok("Password has been reset successfully")
-            : Result.Fail("Failed to reset password",
-            result.Errors
-                  .GroupBy(x => x.Code)
-                  .ToDictionary(g => g.Key,
-                                g => g.Select(x => x.Description).ToArray()));
+            : Result.Fail("Failed to reset password", result.GetErrors());
+    }
+
+    public async Task<Result> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto)
+    {
+        AppUser? appUser = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (appUser is null)
+            return Result.Fail("User not found");
+
+        _mapper.Map(updateUserDto, appUser);
+
+        appUser.UpdatedAt = DateTimeOffset.UtcNow;
+
+        IdentityResult result = await _userManager.UpdateAsync(appUser);
+
+        return result.Succeeded
+            ? Result.Ok("User has bee updated successfully")
+            : Result.Fail("Failed to update user", result.GetErrors());
+    }
+
+    public async Task<Result> AddModeratorAsync(Guid userId)
+    {
+        AppUser? appUser = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (appUser is null)
+            return Result.Fail("User not found");
+
+        bool isModerator = await _userManager.IsInRoleAsync(appUser, "Moderator");
+
+        if (isModerator)
+            return Result.Fail("User is already a moderator");
+
+        IdentityResult result = await _userManager.AddToRoleAsync(appUser, "Moderator");
+
+        return result.Succeeded
+            ? Result.Ok("User has been promoted to Moderator role")
+            : Result.Fail("Failed to assign Moderator role");
+    }
+
+    public async Task<Result> RemoveModeratorAsync(Guid userId)
+    {
+        AppUser? appUser = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (appUser is null)
+            return Result.Fail("User not found");
+
+        bool isModerator = await _userManager.IsInRoleAsync(appUser, "Moderator");
+
+        if (!isModerator)
+            return Result.Fail("User is not moderator");
+
+        IdentityResult result = await _userManager.RemoveFromRoleAsync(appUser, "Moderator");
+
+        return result.Succeeded
+            ? Result.Ok("User has been removed from Moderator role")
+            : Result.Fail("Failed to remove Moderator role");
+    }
+
+    public async Task<Result> DeleteUserAsync(Guid userId)
+    {
+        AppUser? appUser = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (appUser is null)
+            return Result.Fail("User not found");
+
+        if (appUser.IsDeleted == true)
+            return Result.Fail("User already deleted");
+
+        appUser.IsDeleted = true;
+        appUser.DeletedAt = DateTimeOffset.UtcNow;
+
+        IdentityResult result = await _userManager.UpdateSecurityStampAsync(appUser);
+
+        if (!result.Succeeded)
+            return Result.Fail("Failed to invalidate user sessions");
+
+        IdentityResult updateResult = await _userManager.UpdateAsync(appUser);
+
+        return updateResult.Succeeded
+            ? Result.Ok("User has successfully deleted")
+            : Result.Fail("Failed to persist delete operation");
+    }
+
+    public async Task<Result> RestoreUserAsync(Guid userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user is null)
+            return Result.Fail("User not found");
+
+        if (!user.IsDeleted)
+            return Result.Fail("User is not deleted");
+
+        user.IsDeleted = false;
+        user.DeletedAt = null;
+
+        var result = await _userManager.UpdateAsync(user);
+
+        return result.Succeeded
+            ? Result.Ok("User has successfully restored")
+            : Result.Fail("Failed to persist restore operation");
+    }
+
+    public async Task<Result<PagedList<UserDto>>> GetAllUsersAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 10 : pageSize;
+        pageSize = Math.Min(pageSize, 50);
+
+        IQueryable<AppUser> query = _userManager.Users.AsQueryable();
+
+        int total = await query.CountAsync(cancellationToken);
+
+        List<UserDto> users = await query
+                    .OrderByDescending(u => u.CreatedAt)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
+
+        PagedList<UserDto> pagedList = new(users, total, page, pageSize);
+
+        return Result<PagedList<UserDto>>.Ok(pagedList);
     }
 }

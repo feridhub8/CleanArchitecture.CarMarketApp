@@ -20,10 +20,8 @@ public sealed class ForgotPasswordUserCommandHandler : IRequestHandler<ForgotPas
 
     public async Task<Result> Handle(ForgotPasswordUserCommand request, CancellationToken cancellationToken)
     {
-        if (request is null)
-            return Result<LoginResponse>.Fail("Request cannot be null");
-
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
         if (!validationResult.IsValid)
             return Result<LoginResponse>.Fail("Validation Error", validationResult.GetErrors());
 

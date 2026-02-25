@@ -15,9 +15,6 @@ public sealed class LogoutAllDevicesCommandHandler : IRequestHandler<LogoutAllDe
 
     public async Task<Result> Handle(LogoutAllDevicesCommand request, CancellationToken cancellationToken)
     {
-        if (request is null)
-            return Result.Fail("Request cannot be null");
-
         return await _userService.LogoutAllDevicesAsync(request.UserId, cancellationToken);
     }
 }

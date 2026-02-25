@@ -20,10 +20,8 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
 
     public async Task<Result> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        if (request is null)
-            return Result.Fail("Request cannot be null");
-
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
         if (!validationResult.IsValid)
             return Result.Fail(null, validationResult.GetErrors());
 

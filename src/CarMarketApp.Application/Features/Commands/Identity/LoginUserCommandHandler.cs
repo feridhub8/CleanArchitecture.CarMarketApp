@@ -21,10 +21,8 @@ public sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, 
 
     public async Task<Result<LoginResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        if (request is null)
-            return Result<LoginResponse>.Fail("Request cannot be null");
-
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
         if (!validationResult.IsValid)
             return Result<LoginResponse>.Fail("Validation Error", validationResult.GetErrors());
 

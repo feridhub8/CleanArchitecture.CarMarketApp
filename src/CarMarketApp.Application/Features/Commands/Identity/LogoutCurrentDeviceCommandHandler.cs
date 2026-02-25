@@ -21,9 +21,6 @@ public sealed class LogoutCurrentDeviceCommandHandler : IRequestHandler<LogoutCu
 
     public async Task<Result> Handle(LogoutCurrentDeviceCommand request, CancellationToken cancellationToken)
     {
-        if (request is null)
-            return Result.Fail("Request cannot be null");
-
         ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)

@@ -17,7 +17,5 @@ public sealed class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRo
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        builder.Entity<AppUser>().HasQueryFilter(u => !u.IsDeleted);
     }
 }
