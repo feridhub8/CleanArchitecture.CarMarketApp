@@ -1,3 +1,4 @@
+using CarMarketApp.Infrastructure.Identity.Entities;
 using CarMarketApp.Infrastructure.Seeds;
 using CarMarketApp.WebAPI.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
     await RoleSeeder.SeedRolesAsync(roleManager);
 }
 

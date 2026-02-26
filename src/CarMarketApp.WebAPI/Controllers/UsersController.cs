@@ -166,9 +166,9 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "Admin,Moderator")]
-    public async Task<IActionResult> GetAllUsers([FromQuery] int page, [FromQuery] int pageSize, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllUsers([FromQuery] UserFilterDto userFilterDto, CancellationToken cancellationToken)
     {
-        Result<PagedList<UserDto>> result = await _mediator.Send(new GetAllUsersQuery(page, pageSize), cancellationToken);
+        Result<PagedList<UserDto>> result = await _mediator.Send(new GetAllUsersQuery(userFilterDto), cancellationToken);
 
         return result.Success ? Ok(result) : BadRequest(result);
     }

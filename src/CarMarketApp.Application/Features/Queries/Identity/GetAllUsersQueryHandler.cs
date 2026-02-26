@@ -17,6 +17,6 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
 
     public async Task<Result<PagedList<UserDto>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        return await _userService.GetAllUsersAsync(request.Page, request.PageSize, cancellationToken);
+        return await _userService.GetAllUsersAsync(request.UserFilterDto, cancellationToken);
     }
 }

@@ -16,6 +16,10 @@ public sealed class MappingProfile : Profile
 
         CreateMap<UpdateUserDto, AppUser>();
 
-        CreateMap<AppUser, UserDto>();
+        CreateMap<AppUser, UserDto>()
+            .ForMember(
+                dest => dest.Roles,
+                opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role!.Name))
+            );
     }
 }

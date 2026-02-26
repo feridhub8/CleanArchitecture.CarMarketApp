@@ -21,8 +21,4 @@
     <ProjectReference Include="..\CarMarketApp.Domain\CarMarketApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Implementations\Services\" />
-  </ItemGroup>
-
 </Project>

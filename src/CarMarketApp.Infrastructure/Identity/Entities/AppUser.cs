@@ -13,6 +13,8 @@ public sealed class AppUser : IdentityUser<Guid>
     public DateTimeOffset? DeletedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
 
+    public ICollection<AppUserRole> UserRoles { get; set; } = new List<AppUserRole>();
+
     public AppUser()
     {
         CreatedAt = DateTimeOffset.UtcNow;

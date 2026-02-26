@@ -19,5 +19,5 @@ public interface IUserService
     Task<Result> RemoveModeratorAsync(Guid userId);
     Task<Result> DeleteUserAsync(Guid userId);
     Task<Result> RestoreUserAsync(Guid userId);
-    Task<Result<PagedList<UserDto>>> GetAllUsersAsync(int page, int pageSize, CancellationToken cancellationToken);
+    Task<Result<PagedList<UserDto>>> GetAllUsersAsync(UserFilterDto userFilterDto, CancellationToken cancellationToken);
 }

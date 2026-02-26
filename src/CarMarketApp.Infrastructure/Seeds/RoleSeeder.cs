@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CarMarketApp.Infrastructure.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarMarketApp.Infrastructure.Seeds;
 
 public static class RoleSeeder
 {
-    public static async Task SeedRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
+    public static async Task SeedRolesAsync(RoleManager<AppRole> roleManager)
     {
         string[] roles = ["User", "Moderator", "Admin"];
 
@@ -12,7 +13,7 @@ public static class RoleSeeder
         {
             if (!await roleManager.RoleExistsAsync(roleName))
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
+                await roleManager.CreateAsync(new AppRole { Name = roleName });
             }
         }
     }

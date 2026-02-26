@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
         // Identity
-        services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+        services.AddIdentity<AppUser, AppRole>(options =>
         {
             options.User.RequireUniqueEmail = true;
 

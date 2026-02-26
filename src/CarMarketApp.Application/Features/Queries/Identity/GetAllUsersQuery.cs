@@ -5,4 +5,4 @@ using MediatR;
 
 namespace CarMarketApp.Application.Features.Queries.Identity;
 
-public sealed record GetAllUsersQuery(int Page, int PageSize) : IRequest<Result<PagedList<UserDto>>>;
+public sealed record GetAllUsersQuery(UserFilterDto UserFilterDto) : IRequest<Result<PagedList<UserDto>>>;

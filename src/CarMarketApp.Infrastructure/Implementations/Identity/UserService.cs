@@ -315,13 +315,38 @@ public sealed class UserService : IUserService
             : Result.Fail("Failed to persist restore operation");
     }
 
-    public async Task<Result<PagedList<UserDto>>> GetAllUsersAsync(int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<Result<PagedList<UserDto>>> GetAllUsersAsync(UserFilterDto userFilterDto, CancellationToken cancellationToken)
     {
+        int page = userFilterDto.Page;
+        int pageSize = userFilterDto.PageSize;
+        string? search = userFilterDto.Search;
+        string? role = userFilterDto.Role;
+
         page = page < 1 ? 1 : page;
         pageSize = pageSize < 1 ? 10 : pageSize;
         pageSize = Math.Min(pageSize, 50);
 
-        IQueryable<AppUser> query = _userManager.Users.AsQueryable();
+        IQueryable<AppUser> query = _userManager.Users;
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(u =>
+                EF.Functions.Like(u.FirstName, $"%{search}%") ||
+                EF.Functions.Like(u.LastName, $"%{search}%") ||
+                (u.Email != null && EF.Functions.Like(u.Email, $"%{search}%")) ||
+                (u.UserName != null && EF.Functions.Like(u.UserName, $"%{search}%"))
+                );
+        }
+
+        if (!string.IsNullOrWhiteSpace(role))
+        {
+            role = role.Trim();
+
+            query = query.Where(u =>
+                u.UserRoles.Any(ur => ur.Role != null && ur.Role.Name == role));
+        }
 
         int total = await query.CountAsync(cancellationToken);
 
