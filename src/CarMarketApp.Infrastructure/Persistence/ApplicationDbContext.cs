@@ -1,5 +1,6 @@
 ﻿using CarMarketApp.Domain.Entities;
 using CarMarketApp.Infrastructure.Identity.Entities;
+using CarMarketApp.Infrastructure.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,13 @@ public sealed class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, G
     }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Brand> Brands { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.ApplyConfigurationsFromAssembly(typeof(BrandConfigurations).Assembly);
 
         builder.Entity<AppUserRole>(userRole =>
         {

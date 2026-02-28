@@ -1,6 +1,7 @@
 ﻿using CarMarketApp.Application.Abstractions.Helpers;
 using CarMarketApp.Application.Abstractions.Identity;
 using CarMarketApp.Application.Abstractions.Repositories;
+using CarMarketApp.Application.Abstractions.Services;
 using CarMarketApp.Application.Abstractions.UnitOfWork;
 using CarMarketApp.Application.DTOs.Users;
 using CarMarketApp.Application.Features.Commands.Users;
@@ -9,6 +10,7 @@ using CarMarketApp.Infrastructure.Identity.Entities;
 using CarMarketApp.Infrastructure.Implementations.Helpers;
 using CarMarketApp.Infrastructure.Implementations.Identity;
 using CarMarketApp.Infrastructure.Implementations.Repositories;
+using CarMarketApp.Infrastructure.Implementations.Services;
 using CarMarketApp.Infrastructure.Implementations.UnitOfWork;
 using CarMarketApp.Infrastructure.Mapping;
 using CarMarketApp.Infrastructure.Persistence;
@@ -45,10 +47,12 @@ public static class ServiceCollectionExtensions
 
         // Repositories
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // Services
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IBrandService, BrandService>();
 
         // Helpers
         services.AddScoped<ITokenGenerator, TokenGenerator>();

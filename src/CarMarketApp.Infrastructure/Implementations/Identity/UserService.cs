@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Azure.Core;
 using CarMarketApp.Application.Abstractions.Helpers;
 using CarMarketApp.Application.Abstractions.Identity;
 using CarMarketApp.Application.Abstractions.UnitOfWork;
@@ -15,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using System.Threading;
 
 namespace CarMarketApp.Infrastructure.Implementations.Identity;
 

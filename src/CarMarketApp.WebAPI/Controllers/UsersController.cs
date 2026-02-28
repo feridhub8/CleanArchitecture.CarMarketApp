@@ -122,7 +122,7 @@ public class UsersController : ControllerBase
 
     [HttpPut("{userId:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RestoreUser([FromRoute] Guid userId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Restore([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
         Result result = await _mediator.Send(new RestoreUserCommand(userId), cancellationToken);
 
@@ -157,7 +157,7 @@ public class UsersController : ControllerBase
 
     [HttpDelete("{userId:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> DeleteUser([FromRoute] Guid userId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
         Result result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
 
@@ -166,7 +166,7 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "Admin,Moderator")]
-    public async Task<IActionResult> GetAllUsers([FromQuery] UserFilterDto userFilterDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll([FromQuery] UserFilterDto userFilterDto, CancellationToken cancellationToken)
     {
         Result<PagedList<UserDto>> result = await _mediator.Send(new GetAllUsersQuery(userFilterDto), cancellationToken);
 

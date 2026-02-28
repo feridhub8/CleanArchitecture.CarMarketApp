@@ -11,12 +11,15 @@ public class UnitOfWork : IUnitOfWork
     private IDbContextTransaction? _transaction;
     public UnitOfWork(
         ApplicationDbContext context,
-        IRefreshTokenRepository refreshTokenRepository)
+        IRefreshTokenRepository refreshTokenRepository,
+        IBrandRepository brandRepository)
     {
         _context = context;
         RefreshTokens = refreshTokenRepository;
+        Brands = brandRepository;
     }
     public IRefreshTokenRepository RefreshTokens { get; }
+    public IBrandRepository Brands { get; }
 
     public async Task BeginTransactionAsync()
     {
