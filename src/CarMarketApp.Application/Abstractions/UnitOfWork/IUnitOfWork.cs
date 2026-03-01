@@ -6,6 +6,7 @@ public interface IUnitOfWork : IDisposable
 {
     IRefreshTokenRepository RefreshTokens { get; }
     IBrandRepository Brands { get; }
+    IModelRepository Models { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     Task BeginTransactionAsync();

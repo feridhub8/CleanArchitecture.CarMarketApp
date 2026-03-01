@@ -2,12 +2,13 @@
 
 namespace CarMarketApp.Domain.Entities;
 
-public sealed class Brand : BaseEntity
+public sealed class Model : BaseEntity
 {
     public string Name { get; set; } = default!;
     public string NormalizedName { get; set; } = default!;
 
-    public ICollection<Model> Models { get; set; } = new List<Model>();
+    public Guid BrandId { get; set; }
+    public Brand? Brand { get; set; }
 
     public string Normalize(string name)
     {

@@ -12,14 +12,17 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(
         ApplicationDbContext context,
         IRefreshTokenRepository refreshTokenRepository,
-        IBrandRepository brandRepository)
+        IBrandRepository brandRepository,
+        IModelRepository models)
     {
         _context = context;
         RefreshTokens = refreshTokenRepository;
         Brands = brandRepository;
+        Models = models;
     }
     public IRefreshTokenRepository RefreshTokens { get; }
     public IBrandRepository Brands { get; }
+    public IModelRepository Models { get; }
 
     public async Task BeginTransactionAsync()
     {

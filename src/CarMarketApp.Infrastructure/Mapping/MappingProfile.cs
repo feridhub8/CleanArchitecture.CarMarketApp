@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarMarketApp.Application.DTOs.Brands;
 using CarMarketApp.Application.DTOs.Identity;
+using CarMarketApp.Application.DTOs.Models;
 using CarMarketApp.Application.DTOs.Users;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Domain.Entities;
@@ -28,5 +29,10 @@ public sealed class MappingProfile : Profile
         // Brand
         CreateMap<CreateBrandDto, Brand>();
         CreateMap<Brand, BrandDto>();
+
+        // Model
+        CreateMap<CreateModelDto, Model>();
+        CreateMap<Model, ModelDto>()
+    .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand!.Name));
     }
 }
