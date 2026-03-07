@@ -49,12 +49,14 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IModelRepository, ModelRepository>();
+        services.AddScoped<IAdvertRepository, AdvertRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // Services
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IModelService, ModelService>();
+        services.AddScoped<IAdvertService, AdvertService>();
 
         // Helpers
         services.AddScoped<ITokenGenerator, TokenGenerator>();

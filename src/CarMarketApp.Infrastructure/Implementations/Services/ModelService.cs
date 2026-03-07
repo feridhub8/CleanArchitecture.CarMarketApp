@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using CarMarketApp.Application.Abstractions.Services;
 using CarMarketApp.Application.Abstractions.UnitOfWork;
-using CarMarketApp.Application.DTOs.Brands;
 using CarMarketApp.Application.DTOs.Models;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;

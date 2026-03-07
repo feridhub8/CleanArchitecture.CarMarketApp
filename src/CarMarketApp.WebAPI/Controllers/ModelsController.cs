@@ -2,6 +2,7 @@
 using CarMarketApp.Application.Features.Commands.Models;
 using CarMarketApp.Application.Features.Queries.Brands;
 using CarMarketApp.Application.Features.Queries.Models;
+using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,7 +61,7 @@ public class ModelsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetAll([FromQuery] ModelFilterDto modelFilterDto, CancellationToken cancellationToken)
     {
-        Result result = await _mediator.Send(new GetAllModelsQuery(modelFilterDto), cancellationToken);
+        Result<PagedList<ModelDto>> result = await _mediator.Send(new GetAllModelsQuery(modelFilterDto), cancellationToken);
 
         return result.Success ? Ok(result) : BadRequest(result);
     }

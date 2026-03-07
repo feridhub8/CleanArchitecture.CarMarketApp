@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarMarketApp.Application.DTOs.Adverts;
 using CarMarketApp.Application.DTOs.Brands;
 using CarMarketApp.Application.DTOs.Identity;
 using CarMarketApp.Application.DTOs.Models;
@@ -33,6 +34,14 @@ public sealed class MappingProfile : Profile
         // Model
         CreateMap<CreateModelDto, Model>();
         CreateMap<Model, ModelDto>()
-    .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand!.Name));
+            .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand!.Name));
+
+        // Advert
+        CreateMap<CreateAdvertDto, Advert>();
+        CreateMap<UpdateAdvertDto, Advert>();
+        CreateMap<Advert, AdvertDto>()
+            .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.Model.Name))
+            .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Model.Brand!.Name));
+
     }
 }

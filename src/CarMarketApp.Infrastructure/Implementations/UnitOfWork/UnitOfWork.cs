@@ -13,16 +13,19 @@ public class UnitOfWork : IUnitOfWork
         ApplicationDbContext context,
         IRefreshTokenRepository refreshTokenRepository,
         IBrandRepository brandRepository,
-        IModelRepository models)
+        IModelRepository modelRepository,
+        IAdvertRepository advertRepository)
     {
         _context = context;
         RefreshTokens = refreshTokenRepository;
         Brands = brandRepository;
-        Models = models;
+        Models = modelRepository;
+        Adverts = advertRepository;
     }
     public IRefreshTokenRepository RefreshTokens { get; }
     public IBrandRepository Brands { get; }
     public IModelRepository Models { get; }
+    public IAdvertRepository Adverts { get; }
 
     public async Task BeginTransactionAsync()
     {
