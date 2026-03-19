@@ -1,8 +1,6 @@
 ﻿using CarMarketApp.Application.DTOs.Adverts;
-using CarMarketApp.Application.DTOs.Models;
 using CarMarketApp.Application.Features.Commands.Adverts;
 using CarMarketApp.Application.Features.Queries.Adverts;
-using CarMarketApp.Application.Features.Queries.Models;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
 using MediatR;
@@ -44,7 +42,15 @@ public class AdvertsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Update([FromBody] UpdateAdvertDto updateAdvertDto, CancellationToken cancellationToken)
     {
-        Result result = await _mediator.Send(new UpdateAdvertCommand(updateAdvertDto), cancellationToken);
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim is null)
+            return Unauthorized("User not found");
+
+        if (!Guid.TryParse(userIdClaim.Value, out var userId))
+            return BadRequest("Invalid user id");
+
+        Result result = await _mediator.Send(new UpdateAdvertCommand(updateAdvertDto, userId), cancellationToken);
 
         return result.Success ? Ok(result) : BadRequest(result);
     }
@@ -62,7 +68,15 @@ public class AdvertsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Delete([FromQuery] Guid advertId, CancellationToken cancellationToken)
     {
-        Result result = await _mediator.Send(new DeleteAdvertCommand(advertId), cancellationToken);
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim is null)
+            return Unauthorized("User not found");
+
+        if (!Guid.TryParse(userIdClaim.Value, out var userId))
+            return BadRequest("Invalid user id");
+
+        Result result = await _mediator.Send(new DeleteAdvertCommand(advertId, userId), cancellationToken);
 
         return result.Success ? Ok(result) : BadRequest(result);
     }

@@ -16,6 +16,8 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 var app = builder.Build();
 
+app.UseCors("MyPolicy");
+
 using (var scope = app.Services.CreateScope())
 {
     RoleManager<AppRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();

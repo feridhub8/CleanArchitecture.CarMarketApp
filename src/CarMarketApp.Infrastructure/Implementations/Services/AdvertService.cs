@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using CarMarketApp.Application.Abstractions.Services;
 using CarMarketApp.Application.Abstractions.UnitOfWork;
 using CarMarketApp.Application.DTOs.Adverts;
-using CarMarketApp.Application.DTOs.Models;
 using CarMarketApp.Application.Models;
 using CarMarketApp.Application.Models.ResultPattern;
 using CarMarketApp.Domain.Entities;
@@ -51,12 +50,15 @@ public sealed class AdvertService : IAdvertService
         return Result.Ok("Advert has created successfully");
     }
 
-    public async Task<Result> UpdateAdvertAsync(UpdateAdvertDto updateAdvertDto, CancellationToken cancellationToken)
+    public async Task<Result> UpdateAdvertAsync(UpdateAdvertDto updateAdvertDto, Guid userId, CancellationToken cancellationToken)
     {
         Advert? existingAdvert = await _unitOfWork.Adverts.GetAdvertByIdIgnoringQueryFilterAsync(updateAdvertDto.Id, cancellationToken);
 
         if (existingAdvert is null)
             return Result.Fail("Advert not found");
+
+        if (existingAdvert.UserId != userId)
+            return Result.Fail("You are not allowed to update this advert");
 
         _mapper.Map(updateAdvertDto, existingAdvert);
         existingAdvert.UpdatedAt = DateTimeOffset.UtcNow;
@@ -74,16 +76,19 @@ public sealed class AdvertService : IAdvertService
         return Result.Ok("Advert has updated successfully");
     }
 
-    public async Task<Result> DeleteAdvertAsync(Guid advertId, CancellationToken cancellationToken)
+    public async Task<Result> DeleteAdvertAsync(Guid advertId, Guid userId, CancellationToken cancellationToken)
     {
         Advert? existingAdvert = await _unitOfWork.Adverts.GetAdvertByIdIgnoringQueryFilterAsync(advertId, cancellationToken);
 
         if (existingAdvert is null)
             return Result.Fail("Advert not found");
 
-        if (existingAdvert.IsDeleted == true)
-            return Result.Fail("Advert has already deleted");
+        if (existingAdvert.UserId != userId)
+            return Result.Fail("You are not allowed to delete this advert");
 
+        if (existingAdvert.IsDeleted)
+            return Result.Fail("Advert has already deleted");
+        
         existingAdvert.IsDeleted = true;
         existingAdvert.DeletedAt = DateTimeOffset.UtcNow;
 

@@ -78,7 +78,7 @@ public static class ServiceCollectionExtensions
         {
             options.SuppressModelStateInvalidFilter = true;
 
-        });
+        }).AddFluentValidationAutoValidation();
 
         // 
         // JWT
@@ -111,6 +111,17 @@ public static class ServiceCollectionExtensions
                 };
             });
         services.AddAuthorization();
+
+        // CORS
+        services.AddCors(options =>
+        {
+            options.AddPolicy("MyPolicy", policy =>
+            {
+                policy.WithOrigins("https://localhost:7036")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
 
         return services;
     }

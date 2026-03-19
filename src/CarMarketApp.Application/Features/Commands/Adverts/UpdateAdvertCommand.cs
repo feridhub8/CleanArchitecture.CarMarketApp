@@ -4,4 +4,6 @@ using MediatR;
 
 namespace CarMarketApp.Application.Features.Commands.Adverts;
 
-public sealed record UpdateAdvertCommand(UpdateAdvertDto UpdateAdvertDto) : IRequest<Result>;
+public sealed record UpdateAdvertCommand(
+    UpdateAdvertDto UpdateAdvertDto,
+    Guid UserId) : IRequest<Result>;

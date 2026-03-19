@@ -25,6 +25,6 @@ public sealed class UpdateAdvertCommandHandler : IRequestHandler<UpdateAdvertCom
         if (!validationResult.IsValid)
             return Result.Fail(null, validationResult.GetErrors());
 
-        return await _advertService.UpdateAdvertAsync(request.UpdateAdvertDto, cancellationToken);
+        return await _advertService.UpdateAdvertAsync(request.UpdateAdvertDto, request.UserId, cancellationToken);
     }
 }

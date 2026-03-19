@@ -25,6 +25,6 @@ public sealed class DeleteAdvertCommandHandler : IRequestHandler<DeleteAdvertCom
         if (!validationResult.IsValid)
             return Result.Fail(null, validationResult.GetErrors());
 
-        return await _advertService.DeleteAdvertAsync(request.AdvertId, cancellationToken);
+        return await _advertService.DeleteAdvertAsync(request.AdvertId, request.UserId, cancellationToken);
     }
 }
